@@ -75,7 +75,7 @@ import AddEditProject from '@/components/modals/add-edit/AddEditProject.vue'
 import AddDeveloper from '@/components/modals/add-edit/AddDeveloper.vue'
 import DeleteProject from '@/components/modals/delete/DeleteProject.vue'
 import StatusPill from '@/components/common/StatusPillProjects.vue'
-import ProjectService from '@/services/ProjectsService'
+import ProjectService from '@/api/ProjectsFacade'
 import { showToast } from '@/utils/alerts'
 
 const projects = ref([])

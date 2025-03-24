@@ -46,11 +46,11 @@
 <script setup>
 import CustomInput from '@/components/form/CustomInput.vue'
 import { useFormValidation } from '@/utils/formValidation'
+import { showToast } from '@/utils/alerts'
+import AuthService from '@/api/AuthFacade'
 import { useAuthStore } from '@/stores/authStore'
-import AuthService from '@/services/AuthService'
 import router from '@/router'
 import { ref } from 'vue'
-import { showToast } from '@/utils/alerts'
 
 const isLoading = ref(false)
 
@@ -63,8 +63,6 @@ const errors = ref({
   email: '',
   password: '',
 })
-
-const authStore = useAuthStore()
 
 const fieldValidations = {
   email: {
@@ -85,11 +83,23 @@ const onsubmit = async () => {
 
   isLoading.value = true
   try {
-    const response = await AuthService.login(formData.value)
+    await AuthService.login(formData.value)
 
-    authStore.setUserData({ token: response.token, user: response.user })
+    const lastRoute = sessionStorage.getItem('lastAttemptedRoute')
 
-    router.push({ name: 'users' })
+    if (lastRoute) {
+      sessionStorage.removeItem('lastAttemptedRoute')
+      router.push(lastRoute)
+    } else {
+      const authStore = useAuthStore()
+      const userRole = authStore.user?.role_id
+
+      if (userRole === 1) {
+        router.push('/users')
+      } else {
+        router.push('/projects')
+      }
+    }
   } catch (error) {
     console.error('Error al iniciar sesión:', error)
     showToast('error', 'Error al iniciar sesión', error.message)

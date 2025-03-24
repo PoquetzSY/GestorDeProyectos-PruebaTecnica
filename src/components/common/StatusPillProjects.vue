@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import ProjectService from '@/services/ProjectsService'
+import ProjectService from '@/api/ProjectsFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'
 import { ref, computed } from 'vue'

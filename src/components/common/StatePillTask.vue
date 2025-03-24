@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import TaskService from '@/services/TasksService'
+import TaskService from '@/api/TasksFacade'
 import { showToast } from '@/utils/alerts'
 import { useAuthStore } from '@/stores/authStore'
 

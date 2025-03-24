@@ -15,7 +15,7 @@
     </button>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-7 rounded-xl w-lg flex flex-col gap-4">
           <div class="flex justify-end items-center">
             <button @click="closeModal" class="focus:outline-0 cursor-pointer">
@@ -70,9 +70,9 @@
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
 import CustomSelect from '@/components/form/CustomSelect.vue'
-import UserService from '@/services/UserService'
-import ProjectService from '@/services/ProjectsService'
-import TaskService from '@/services/TasksService'
+import UserService from '@/api/UserFacade'
+import ProjectService from '@/api/ProjectsFacade'
+import TaskService from '@/api/TasksFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'
 import { ref } from 'vue'

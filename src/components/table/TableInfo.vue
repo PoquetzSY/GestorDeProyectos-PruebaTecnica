@@ -58,6 +58,6 @@ const roleMap = {
 }
 
 function getRoleName(roleId) {
-  return roleMap[roleId] || 'Desconocido'
+  return roleMap[roleId]
 }
 </script>

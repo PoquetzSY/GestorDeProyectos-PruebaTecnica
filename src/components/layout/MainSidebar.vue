@@ -16,18 +16,18 @@
     <div
       v-show="isOpen"
       class="w-full bg-black/50 h-full fixed top-0 left-0 z-10 transition sm:hidden"
-      v-on:click="toggleSidebar"
+      @click="toggleSidebar"
     ></div>
 
     <Transition name="slide-fade">
       <aside
-        v-if="isOpen"
+        v-show="isOpen"
         class="fixed top-0 right-0 w-48 h-screen bg-gray-800 text-white z-20 rounded-l-xl flex flex-col gap-4 p-4 sm:hidden"
       >
         <div class="flex w-full justify-between items-center">
           <h1 class="text-2xl">Menú</h1>
           <svg
-            v-on:click="toggleSidebar"
+            @click="toggleSidebar"
             xmlns="http://www.w3.org/2000/svg"
             height="24px"
             viewBox="0 -960 960 960"
@@ -41,24 +41,10 @@
         </div>
 
         <nav class="flex flex-col gap-2">
-          <router-link
-            v-show="userRole === 1"
-            :to="{ name: 'users' }"
-            class="text-white hover:text-gray-300"
-            >Usuarios</router-link
-          >
-          <router-link
-            v-show="userRole === 2 || userRole === 3 || userRole === 4"
-            :to="{ name: 'projects' }"
-            class="text-white hover:text-gray-300"
-            >Proyectos</router-link
-          >
-          <router-link :to="{ name: 'profile' }" class="text-white hover:text-gray-300"
-            >Perfil</router-link
-          >
-          <router-link :to="{ name: 'login' }" class="text-white hover:text-gray-300"
-            >Cerrar sesion</router-link
-          >
+          <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
+          <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
+          <SidebarLinks route="profile" text="Perfil" />
+          <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
         </nav>
       </aside>
     </Transition>
@@ -68,32 +54,17 @@
     >
       <h1 class="text-2xl">Panel de gestión</h1>
       <nav class="flex flex-col gap-6">
-        <router-link
-          v-show="userRole === 1"
-          :to="{ name: 'users' }"
-          class="text-white hover:text-gray-300"
-          >Usuarios</router-link
-        >
-        <router-link
-          v-show="userRole === 2 || userRole === 3 || userRole === 4"
-          :to="{ name: 'projects' }"
-          class="text-white hover:text-gray-300"
-          >Proyectos</router-link
-        >
-        <router-link
-          :to="{ name: 'profile', params: { userId: 1 } }"
-          class="text-white hover:text-gray-300"
-          >Perfil</router-link
-        >
-        <router-link :to="{ name: 'login' }" class="text-white hover:text-gray-300"
-          >Cerrar sesion</router-link
-        >
+        <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
+        <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
+        <SidebarLinks route="profile" text="Perfil" />
+        <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
       </nav>
     </aside>
   </div>
 </template>
 
 <script setup>
+import SidebarLinks from './SidebarLinks.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
 
@@ -105,6 +76,10 @@ const isOpen = ref(false)
 
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value
+}
+
+const logout = () => {
+  authStore.logout()
 }
 </script>
 

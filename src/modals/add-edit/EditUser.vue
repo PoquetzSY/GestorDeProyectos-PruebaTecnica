@@ -1,23 +1,6 @@
 <template>
-  <div v-if="userRole === 3">
-    <MainButton v-show="!props.toUpdate" variant="outline" @buttonClick="openModal">
-      Nuevo proyecto
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="24px"
-        viewBox="0 -960 960 960"
-        width="24px"
-        fill="currentColor"
-      >
-        <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-      </svg>
-    </MainButton>
-
-    <button
-      v-show="props.toUpdate"
-      class="focus:outline-0 text-sky-600 cursor-pointer"
-      @click="openModal"
-    >
+  <div>
+    <button class="focus:outline-0 text-sky-600 cursor-pointer" @click="openModal">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="24px"
@@ -32,12 +15,10 @@
     </button>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-10 rounded-xl w-lg">
           <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold mb-4">
-              {{ props.toUpdate ? 'Editar proyecto' : 'Nuevo proyecto' }}
-            </h2>
+            <h2 class="text-2xl font-bold mb-4">Editar usuario</h2>
             <button @click="closeModal" class="focus:outline-0 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,12 +41,35 @@
               id="name"
               label="Nombre"
             />
-            <CustomInput
-              v-model="formData.description"
-              :error-message="errors.description"
-              id="description"
-              label="Descripción"
-            />
+            <div class="flex gap-4">
+              <CustomInput
+                v-model="formData.last_name_p"
+                :error-message="errors.last_name_p"
+                id="firstLastName"
+                label="Apellido Paterno"
+              />
+              <CustomInput
+                v-model="formData.last_name_m"
+                :error-message="errors.last_name_m"
+                id="secondLastName"
+                label="Apellido Materno"
+              />
+            </div>
+            <div class="flex gap-4">
+              <CustomInput
+                v-model="formData.email"
+                :error-message="errors.email"
+                id="email"
+                label="Correo electrónico"
+              />
+              <CustomSelect
+                v-model="formData.role_id"
+                :error-message="errors.role_id"
+                id="role"
+                label="Rol"
+                :options="roleOptions"
+              />
+            </div>
             <MainButton type="submit">
               <span v-if="!isLoading">Guardar</span>
               <svg
@@ -89,22 +93,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import MainButton from '@/components/common/MainButton.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
-import ProjectService from '@/services/ProjectsService'
-import { useAuthStore } from '@/stores/authStore'
+import CustomSelect from '@/components/form/CustomSelect.vue'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'
+import UserService from '@/api/UserFacade'
 import { ref } from 'vue'
 
-const authStore = useAuthStore()
-
-const userRole = authStore.user?.role_id
-
 const props = defineProps({
-  toUpdate: { type: Boolean, default: false },
-  projectId: { type: Number, default: null },
+  userId: {
+    type: Number,
+    required: true,
+  },
 })
 
 const emit = defineEmits(['refresh'])
@@ -114,23 +116,36 @@ const isLoading = ref(false)
 
 const formData = ref({
   name: '',
-  description: '',
+  last_name_p: '',
+  last_name_m: '',
+  email: '',
+  role_id: 0,
 })
 
 const errors = ref({
   name: '',
-  description: '',
+  last_name_p: '',
+  last_name_m: '',
+  email: '',
+  role_id: '',
 })
 
+const roleOptions = [
+  { id: 1, name: 'RH' },
+  { id: 2, name: 'Desarrollador' },
+  { id: 3, name: 'Planeación' },
+  { id: 4, name: 'Tester' },
+]
+
 const openModal = async () => {
-  if (props.toUpdate && props.projectId) {
+  if (props.userId) {
     try {
-      const response = await ProjectService.getProject(props.projectId)
+      const response = await UserService.getUser(props.userId)
       formData.value = { ...response.data }
     } catch (error) {
-      console.error(error)
-      showToast('error', 'Error al obtener el proyecto', error)
-      closeModal()
+      console.error('Error al cargar el usuario:', error)
+      showToast('error', 'Error', error)
+      resetForm()
     }
   }
   isOpen.value = true
@@ -144,42 +159,44 @@ const closeModal = () => {
 const resetForm = () => {
   formData.value = {
     name: '',
-    description: '',
+    last_name_p: '',
+    last_name_m: '',
+    email: '',
+    role_id: 0,
   }
   errors.value = {
     name: '',
-    description: '',
+    last_name_p: '',
+    last_name_m: '',
+    email: '',
+    role_id: '',
   }
 }
 
 const fieldValidations = {
   name: { message: 'El nombre es obligatorio' },
-  description: { message: 'La descripción es obligatoria' },
+  last_name_p: { message: 'El apellido paterno es obligatorio' },
+  last_name_m: { message: 'El apellido materno es obligatorio' },
+  email: { message: 'El correo electrónico es obligatorio', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
+  role_id: { message: 'El rol es obligatorio' },
 }
 
 const { validateForm } = useFormValidation(formData, errors, fieldValidations)
 
 const onSubmit = async () => {
   if (!validateForm()) return
-
   isLoading.value = true
+
   try {
-    if (props.toUpdate && props.projectId) {
-      await ProjectService.updateProject(props.projectId, formData.value)
-      showToast('success', 'Proyecto actualizado correctamente')
-    } else {
-      await ProjectService.createProject(formData.value)
-      showToast('success', 'Proyecto creado correctamente')
-    }
+    await UserService.updateUser(props.userId, formData.value)
+    showToast('success', 'Usuario actualizado correctamente')
 
     emit('refresh', true)
     closeModal()
   } catch (error) {
-    showToast('error', 'Error', error.message || 'Ocurrió un error al guardar el proyecto')
+    showToast('error', 'Error', error.message || 'Ocurrió un error al actualizar el usuario')
   } finally {
     isLoading.value = false
   }
 }
 </script>
-
-<style scoped></style>

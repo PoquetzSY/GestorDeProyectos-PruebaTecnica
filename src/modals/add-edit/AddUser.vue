@@ -14,7 +14,7 @@
     </MainButton>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-10 rounded-xl w-lg">
           <div class="flex justify-between items-center">
             <h2 class="text-2xl font-bold mb-4">Nuevo usuario</h2>
@@ -105,7 +105,7 @@ import CustomInput from '@/components/form/CustomInput.vue'
 import CustomSelect from '@/components/form/CustomSelect.vue'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'
-import UserService from '@/services/UserService'
+import UserService from '@/api/UserFacade'
 import { ref } from 'vue'
 
 const emit = defineEmits(['refresh'])

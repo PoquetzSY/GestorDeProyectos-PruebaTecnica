@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userRole === 3">
+  <div>
     <button @click="openModal" class="text-red-600 cursor-pointer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -15,9 +15,9 @@
     </button>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-10 rounded-lg w-md flex flex-col gap-6">
-          <p class="text-3xl text-center">¿Deseas eliminar el proyecto {{ props.title }}?</p>
+          <p class="text-3xl text-center">¿Deseas eliminar a {{ props.title }}?</p>
           <div class="flex justify-center gap-4">
             <MainButton :loading="isDeleting" @buttonClick="deleteData">
               Confirmar
@@ -55,14 +55,9 @@
 
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
-import ProjectService from '@/services/ProjectsService'
-import { useAuthStore } from '@/stores/authStore'
+import UserService from '@/api/UserFacade'
 import { showToast } from '@/utils/alerts'
 import { ref } from 'vue'
-
-const authStore = useAuthStore()
-
-const userRole = authStore.user?.role_id
 
 const props = defineProps({
   title: {
@@ -91,17 +86,13 @@ const closeModal = () => {
 const deleteData = async () => {
   isDeleting.value = true
   try {
-    await ProjectService.deleteProject(props.idToDelete)
-    showToast('success', `Proyecto "${props.title}" eliminado correctamente`)
+    await UserService.deleteUser(props.idToDelete)
+    showToast('success', 'Usuario eliminado correctamente')
     emit('refresh')
     closeModal()
   } catch (error) {
-    console.error('Error al eliminar el proyecto:', error)
-    showToast(
-      'error',
-      `Error al eliminar el proyecto`,
-      error.response?.data?.message || error.message,
-    )
+    console.error('Error al eliminar usuario:', error)
+    showToast('error', 'Error al eliminar usuario', error.response?.data?.message || error.message)
   } finally {
     isDeleting.value = false
   }

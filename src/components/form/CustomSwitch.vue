@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import UserService from '@/services/UserService'
+import UserService from '@/api/UserFacade'
 
 const props = defineProps({
   modelValue: {

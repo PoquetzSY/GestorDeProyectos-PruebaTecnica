@@ -15,9 +15,9 @@
     </button>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-10 rounded-lg w-md flex flex-col gap-6">
-          <p class="text-3xl text-center">¿Deseas eliminar la tarea {{ props.title }}?</p>
+          <p class="text-3xl text-center">¿Deseas eliminar el proyecto {{ props.title }}?</p>
           <div class="flex justify-center gap-4">
             <MainButton :loading="isDeleting" @buttonClick="deleteData">
               Confirmar
@@ -55,7 +55,7 @@
 
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
-import TaskService from '@/services/TasksService'
+import ProjectService from '@/api/ProjectsFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'
 import { ref } from 'vue'
@@ -91,13 +91,17 @@ const closeModal = () => {
 const deleteData = async () => {
   isDeleting.value = true
   try {
-    await TaskService.deleteTask(props.idToDelete)
-    showToast('success', `Tarea "${props.title}" eliminado correctamente`)
+    await ProjectService.deleteProject(props.idToDelete)
+    showToast('success', `Proyecto "${props.title}" eliminado correctamente`)
     emit('refresh')
     closeModal()
   } catch (error) {
-    console.error('Error al eliminar la tarea:', error)
-    showToast('error', `Error al eliminar la tarea`, error.response?.data?.message || error.message)
+    console.error('Error al eliminar el proyecto:', error)
+    showToast(
+      'error',
+      `Error al eliminar el proyecto`,
+      error.response?.data?.message || error.message,
+    )
   } finally {
     isDeleting.value = false
   }

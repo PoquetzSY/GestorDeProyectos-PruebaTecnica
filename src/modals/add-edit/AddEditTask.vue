@@ -32,7 +32,7 @@
     </button>
 
     <Transition>
-      <div v-if="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
+      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
         <div class="bg-white p-10 rounded-xl w-lg">
           <div class="flex justify-between items-center">
             <h2 class="text-2xl font-bold mb-4">
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import MainButton from '@/components/common/MainButton.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
-import TaskService from '@/services/TasksService'
+import TaskService from '@/api/TasksFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'

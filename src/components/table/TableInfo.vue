@@ -44,7 +44,7 @@ import CustomSwitch from '../form/CustomSwitch.vue'
 import EditPassword from '../modals/add-edit/EditPassword.vue'
 
 const props = defineProps({
-  columns: Array,
+  columns: { name: String, value: String },
   data: Array,
 })
 

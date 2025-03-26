@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import LoginView from '@/views/LoginView.vue'
-import UserView from '@/views/UserView.vue'
 import ProjectsView from '@/views/ProjectsView.vue'
 import TasksView from '@/views/TasksView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import RouterFacade from '@/api/RouterFacade'
+import UsersContainer from '@/containers/UsersContainer.vue'
 
 const routes = [
   {
@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/users',
     name: 'users',
-    component: UserView,
+    component: UsersContainer,
     meta: { requiresAuth: true, rolesPermitidos: [1] },
   },
   {
@@ -58,6 +58,5 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
-
 
 export default router

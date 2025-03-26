@@ -60,7 +60,7 @@ const updateStatus = async (newStatus) => {
     showToast('success', 'Éxito', 'Estado actualizado correctamente')
   } catch (error) {
     console.error('Error al actualizar el estado:', error)
-    showToast('error', 'Error', error.response?.data?.message || 'No se pudo actualizar el estado')
+    showToast('error', 'Error', error.response?.data?.message)
   } finally {
     isLoading.value = false
     isOpen.value = false

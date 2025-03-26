@@ -28,36 +28,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import MainLayout from '@/layouts/MainLayout.vue'
 import AddUser from '@/components/modals/add-edit/AddUser.vue'
 import TableInfo from '@/components/table/TableInfo.vue'
-import MainLayout from '@/layouts/MainLayout.vue'
-import UserService from '@/api/UserFacade'
-import { showToast } from '@/utils/alerts'
 
-const columns = [
-  { name: 'name', value: 'Nombre' },
-  { name: 'email', value: 'Correo electrónico' },
-  { name: 'registration_date', value: 'Fecha' },
-  { name: 'role_id', value: 'Rol' },
-]
-
-const users = ref([])
-const isLoading = ref(true)
-
-const fetchUsers = async () => {
-  try {
-    const response = await UserService.listUsers()
-    users.value = response.data.data
-  } catch (error) {
-    showToast('error', 'Error al cargar usuarios', error.message)
-    console.error('Error al obtener usuarios:', error)
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(fetchUsers)
+defineProps({
+  users: Array,
+  isLoading: Boolean,
+  columns: Array,
+  fetchUsers: Function,
+})
 </script>
-
-<style scoped></style>

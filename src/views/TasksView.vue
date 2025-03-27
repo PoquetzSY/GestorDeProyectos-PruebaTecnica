@@ -56,9 +56,9 @@
 <script setup>
 import MainLayout from '@/layouts/MainLayout.vue'
 import CardInfo from '@/components/cards/CardInfo.vue'
-import AddEditTask from '@/components/modals/add-edit/AddEditTask.vue'
-import DeleteTask from '@/components/modals/delete/DeleteTask.vue'
-import AddDeveloper from '@/components/modals/add-edit/AddDeveloper.vue'
+import AddEditTask from '@/modals/add-edit/AddEditTask.vue'
+import DeleteTask from '@/modals/delete/DeleteTask.vue'
+import AddDeveloper from '@/modals/add-edit/AddDeveloper.vue'
 import StatusPillTask from '@/components/common/StatePillTask.vue'
 import ProjectService from '@/api/ProjectsFacade'
 import { showToast } from '@/utils/alerts'

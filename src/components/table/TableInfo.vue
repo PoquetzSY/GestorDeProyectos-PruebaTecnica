@@ -36,12 +36,12 @@
 </template>
 
 <script setup>
-import EditUser from '@/components/modals/add-edit/EditUser.vue'
-import DeleteUser from '@/components/modals/delete/DeleteUser.vue'
+import EditUser from '@/modals/add-edit/EditUser.vue'
+import DeleteUser from '@/modals/delete/DeleteUser.vue'
 import RowHeader from '@/components/table/RowHeader.vue'
 import RowInfo from '@/components/table/RowInfo.vue'
-import CustomSwitch from '../form/CustomSwitch.vue'
-import EditPassword from '../modals/add-edit/EditPassword.vue'
+import CustomSwitch from '@/components/form/CustomSwitch.vue'
+import EditPassword from '@/modals/add-edit/EditPassword.vue'
 
 const props = defineProps({
   columns: { name: String, value: String },

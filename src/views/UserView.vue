@@ -29,7 +29,7 @@
 
 <script setup>
 import MainLayout from '@/layouts/MainLayout.vue'
-import AddUser from '@/components/modals/add-edit/AddUser.vue'
+import AddUser from '@/modals/add-edit/AddUser.vue'
 import TableInfo from '@/components/table/TableInfo.vue'
 
 defineProps({

@@ -4,7 +4,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import LoginView from './LoginView.vue'
+import LoginView from '@/views/LoginView.vue'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'
 import AuthService from '@/api/AuthFacade'

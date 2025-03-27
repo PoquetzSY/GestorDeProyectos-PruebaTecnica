@@ -4,7 +4,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import UsersView from '@/views/UsersView.vue'
+import UsersView from '@/views/UserView.vue'
 import UserService from '@/api/UserFacade'
 import { showToast } from '@/utils/alerts'
 

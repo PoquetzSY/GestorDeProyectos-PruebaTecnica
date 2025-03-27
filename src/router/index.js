@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import LoginView from '@/views/LoginView.vue'
+import { useAuthStore } from '@/stores/authStore'
+import RouterFacade from '@/router/routerFacade'
 import ProjectsView from '@/views/ProjectsView.vue'
 import TasksView from '@/views/TasksView.vue'
 import ProfileView from '@/views/ProfileView.vue'
-import RouterFacade from '@/api/RouterFacade'
 import UsersContainer from '@/containers/UsersContainer.vue'
+import LoginContainer from '@/containers/LoginContainer.vue'
 
 const routes = [
   {
     path: '/',
     name: 'login',
-    component: LoginView,
+    component: LoginContainer,
   },
   {
     path: '/users',

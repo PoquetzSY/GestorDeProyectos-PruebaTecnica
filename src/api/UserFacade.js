@@ -6,7 +6,11 @@ export default class UserService {
   }
 
   static async getUser(userId) {
-    return ApiService.get(`/users/show/${userId}`)
+    return ApiService.get(`/users/${userId}`)
+  }
+
+  static async getUserRoles() {
+    return ApiService.get('/users/roles')
   }
 
   static async getDevelopTesters() {
@@ -30,6 +34,6 @@ export default class UserService {
   }
 
   static async toggleUserStatus(userId) {
-    return ApiService.put(`/users/active-inactive/${userId}`)
+    return ApiService.put(`/users/${userId}/status`)
   }
 }

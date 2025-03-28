@@ -43,9 +43,11 @@ import RowInfo from '@/components/table/RowInfo.vue'
 import CustomSwitch from '@/components/form/CustomSwitch.vue'
 import EditPassword from '@/modals/add-edit/EditPassword.vue'
 
+
 const props = defineProps({
   data: Array,
 })
+console.log(props.data)
 
 const emit = defineEmits(['refresh'])
 

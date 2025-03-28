@@ -14,82 +14,52 @@
       </svg>
     </button>
 
-    <Transition>
-      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
-        <div class="bg-white p-10 rounded-xl w-lg">
-          <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold mb-4">Editar usuario</h2>
-            <button @click="closeModal" class="focus:outline-0 cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
-            <CustomInput
-              v-model="formData.name"
-              :error-message="errors.name"
-              :id="formData.name"
-              label="Nombre"
+    <ModalBase v-model="isOpen" title="Editar usuario" @close="resetForm">
+      <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
+        <CustomInput v-model="formData.name" :error-message="errors.name" label="Nombre" />
+        <FormGroup>
+          <CustomInput
+            v-model="formData.last_name_p"
+            :error-message="errors.last_name_p"
+            label="Apellido Paterno"
+          />
+          <CustomInput
+            v-model="formData.last_name_m"
+            :error-message="errors.last_name_m"
+            label="Apellido Materno"
+          />
+        </FormGroup>
+        <FormGroup>
+          <CustomInput
+            v-model="formData.email"
+            :error-message="errors.email"
+            label="Correo electrónico"
+          />
+          <CustomSelect
+            v-model="formData.role_id"
+            :error-message="errors.role_id"
+            label="Rol"
+            :options="roleOptions"
+          />
+        </FormGroup>
+        <MainButton type="submit">
+          <span v-if="!isLoading">Guardar</span>
+          <svg
+            v-else
+            class="animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path
+              d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"
             />
-            <div class="flex gap-4">
-              <CustomInput
-                v-model="formData.last_name_p"
-                :error-message="errors.last_name_p"
-                :id="formData.firstLastName"
-                label="Apellido Paterno"
-              />
-              <CustomInput
-                v-model="formData.last_name_m"
-                :error-message="errors.last_name_m"
-                :id="formData.secondLastName"
-                label="Apellido Materno"
-              />
-            </div>
-            <div class="flex gap-4">
-              <CustomInput
-                v-model="formData.email"
-                :error-message="errors.email"
-                :id="formData.email"
-                label="Correo electrónico"
-              />
-              <CustomSelect
-                v-model="formData.role_id"
-                :error-message="errors.role_id"
-                id="role"
-                label="Rol"
-                :options="roleOptions"
-              />
-            </div>
-            <MainButton type="submit">
-              <span v-if="!isLoading">Guardar</span>
-              <svg
-                v-else
-                class="animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"
-                />
-              </svg>
-            </MainButton>
-          </form>
-        </div>
-      </div>
-    </Transition>
+          </svg>
+        </MainButton>
+      </form>
+    </ModalBase>
   </div>
 </template>
 
@@ -97,6 +67,8 @@
 import MainButton from '@/components/common/MainButton.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
 import CustomSelect from '@/components/form/CustomSelect.vue'
+import ModalBase from '@/modals/ModalBase.vue'
+import FormGroup from '@/components/form/FormGroup.vue'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'
 import UserService from '@/api/UserFacade'

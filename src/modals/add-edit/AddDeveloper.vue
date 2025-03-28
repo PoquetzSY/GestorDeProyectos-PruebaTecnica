@@ -13,57 +13,37 @@
         />
       </svg>
     </button>
-
-    <Transition>
-      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
-        <div class="bg-white p-7 rounded-xl w-lg flex flex-col gap-4">
-          <div class="flex justify-end items-center">
-            <button @click="closeModal" class="focus:outline-0 cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-            </button>
-          </div>
-          <h2 class="text-2xl font-bold text-center">Asignar desarrolladores</h2>
-
-          <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
-            <CustomSelect
-              v-model="selectedUsers"
-              :error-message="errors.developers"
-              id="developers"
-              label="Seleccionar desarrolladores"
-              :options="userOptions"
-              multiple
+    
+    <ModalBase v-model="isOpen" title="Editar usuario" @close="resetForm">
+      <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
+        <CustomSelect
+          v-model="selectedUsers"
+          :error-message="errors.developers"
+          id="developers"
+          label="Seleccionar desarrolladores"
+          :options="userOptions"
+          multiple
+        />
+  
+        <MainButton type="submit">
+          <span v-if="!isLoading">Guardar</span>
+          <svg
+            v-else
+            class="animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path
+              d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"
             />
+          </svg>
+        </MainButton>
+      </form>
+    </ModalBase>
 
-            <MainButton type="submit">
-              <span v-if="!isLoading">Guardar</span>
-              <svg
-                v-else
-                class="animate-spin"
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q17 0 28.5 11.5T520-840q0 17-11.5 28.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-17 11.5-28.5T840-520q17 0 28.5 11.5T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Z"
-                />
-              </svg>
-            </MainButton>
-          </form>
-        </div>
-      </div>
-    </Transition>
   </div>
 </template>
 
@@ -76,6 +56,7 @@ import TaskService from '@/api/TasksFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'
 import { ref } from 'vue'
+import ModalBase from '../ModalBase.vue'
 
 const authStore = useAuthStore()
 

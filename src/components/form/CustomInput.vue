@@ -1,13 +1,12 @@
 <template>
   <div class="flex flex-col gap-2 w-full">
-    <label :for="props.id" class="text-black text-sm sm:text-base">{{ props.label }}</label>
+    <label class="text-black text-sm sm:text-base">{{ props.label }}</label>
     <div class="relative">
       <input
         :class="[
           'border border-neutral-300 py-2 px-4 text-sm sm:text-base rounded-2xl w-full focus:outline-0 invalid:border-red-500 invalid:text-red-600',
           type === 'password' && 'pr-10',
         ]"
-        :id="props.id"
         :type="inputType"
         :placeholder="props.placeholder"
         :value="props.modelValue"
@@ -54,7 +53,6 @@
 import { ref, computed } from 'vue'
 
 const props = defineProps({
-  id: { type: String, required: true },
   label: { type: String, required: true },
   type: { type: String, default: 'text' },
   placeholder: { type: String, default: '' },

@@ -22,7 +22,7 @@
         </svg>
       </div>
 
-      <TableInfo v-else :columns="columns" :data="users" @refresh="fetchUsers" />
+      <TableInfo v-else :data="users" @refresh="fetchUsers" />
     </div>
   </MainLayout>
 </template>

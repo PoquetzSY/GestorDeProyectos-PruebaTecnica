@@ -3,21 +3,21 @@
     <table class="w-full divide-y divide-gray-400">
       <thead class="bg-gray-200 rounded-t-lg">
         <tr>
-          <RowHeader
-            v-for="column in props.columns"
-            :key="column.name"
-            :titleColumn="column.value"
-          />
-          <th class="text-gray-700 uppercase text-sm p-2">Acciones</th>
+          <RowHeader title-column="ID" />
+          <RowHeader title-column="Nombre" />
+          <RowHeader title-column="Correo electrónico" />
+          <RowHeader title-column="Fecha" />
+          <RowHeader title-column="Rol" />
+          <RowHeader title-column="Acciones" />
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
         <tr v-for="data in props.data" :key="data.id" class="bg-white">
-          <RowInfo
-            v-for="column in props.columns"
-            :key="column"
-            :info="column.name === 'role' ? data[column.name.name] : data[column.name]"
-          />
+          <RowInfo :info="data.id" />
+          <RowInfo :info="data.name" />
+          <RowInfo :info="data.email" />
+          <RowInfo :info="formatDate(data.created_at)" />
+          <RowInfo :info="data.role.name" />
           <td class="py-3 px-4 flex justify-center gap-2">
             <CustomSwitch
               v-if="data.is_active !== undefined"
@@ -44,10 +44,14 @@ import CustomSwitch from '@/components/form/CustomSwitch.vue'
 import EditPassword from '@/modals/add-edit/EditPassword.vue'
 
 const props = defineProps({
-  columns: { name: String, value: String },
   data: Array,
 })
 
 const emit = defineEmits(['refresh'])
+
+const formatDate = (date) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' }
+  return new Date(date).toLocaleDateString('es-ES', options)
+}
 
 </script>

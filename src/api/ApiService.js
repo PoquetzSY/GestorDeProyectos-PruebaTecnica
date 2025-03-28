@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/authStore'
 
-const BASE_URL = 'https://1d17-2806-103e-27-3781-149f-3416-5af0-3ce8.ngrok-free.app/api/v1'
+const BASE_URL = 'https://e4d6-2806-103e-27-3781-a0ad-e6dc-155e-687e.ngrok-free.app/api/v1'
 
 const getAuthHeaders = () => {
   const authStore = useAuthStore()

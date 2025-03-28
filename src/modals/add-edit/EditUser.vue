@@ -38,20 +38,20 @@
             <CustomInput
               v-model="formData.name"
               :error-message="errors.name"
-              id="name"
+              :id="formData.name"
               label="Nombre"
             />
             <div class="flex gap-4">
               <CustomInput
                 v-model="formData.last_name_p"
                 :error-message="errors.last_name_p"
-                id="firstLastName"
+                :id="formData.firstLastName"
                 label="Apellido Paterno"
               />
               <CustomInput
                 v-model="formData.last_name_m"
                 :error-message="errors.last_name_m"
-                id="secondLastName"
+                :id="formData.secondLastName"
                 label="Apellido Materno"
               />
             </div>
@@ -59,7 +59,7 @@
               <CustomInput
                 v-model="formData.email"
                 :error-message="errors.email"
-                id="email"
+                :id="formData.email"
                 label="Correo electrónico"
               />
               <CustomSelect

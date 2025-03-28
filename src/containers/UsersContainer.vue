@@ -12,7 +12,7 @@ const columns = [
   { name: 'name', value: 'Nombre' },
   { name: 'email', value: 'Correo electrónico' },
   { name: 'created_at', value: 'Fecha' },
-  { name: 'role', value: 'Rol' },
+  { name: 'role.name', value: 'Rol' },
 ]
 
 const users = ref([])

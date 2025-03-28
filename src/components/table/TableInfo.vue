@@ -16,7 +16,7 @@
           <RowInfo
             v-for="column in props.columns"
             :key="column"
-            :info="column.name === 'role_id' ? getRoleName(data[column.name]) : data[column.name]"
+            :info="column.name === 'role' ? data[column.name.name] : data[column.name]"
           />
           <td class="py-3 px-4 flex justify-center gap-2">
             <CustomSwitch
@@ -50,14 +50,4 @@ const props = defineProps({
 
 const emit = defineEmits(['refresh'])
 
-const roleMap = {
-  1: 'RH',
-  2: 'Desarrollador',
-  3: 'Planeación',
-  4: 'Tester',
-}
-
-function getRoleName(roleId) {
-  return roleMap[roleId]
-}
 </script>

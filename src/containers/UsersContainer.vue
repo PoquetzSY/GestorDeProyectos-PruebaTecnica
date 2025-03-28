@@ -11,8 +11,8 @@ import { showToast } from '@/utils/alerts'
 const columns = [
   { name: 'name', value: 'Nombre' },
   { name: 'email', value: 'Correo electrónico' },
-  { name: 'registration_date', value: 'Fecha' },
-  { name: 'role_id', value: 'Rol' },
+  { name: 'created_at', value: 'Fecha' },
+  { name: 'role', value: 'Rol' },
 ]
 
 const users = ref([])

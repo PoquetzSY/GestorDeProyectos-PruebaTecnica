@@ -11,7 +11,7 @@ export default class RouterFacade {
 
   static hasPermission(route) {
     const authStore = useAuthStore()
-    const userRole = authStore.user?.role_id
+    const userRole = authStore.user?.role.id
 
     return route.meta.rolesPermitidos.includes(userRole)
   }

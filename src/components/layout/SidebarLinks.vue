@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: props.route }" class="text-white hover:text-gray-300">{{
+  <router-link :to="{ name: props.route, params: props.params }" class="text-white hover:text-gray-300">{{
     props.text
   }}</router-link>
 </template>
@@ -8,6 +8,7 @@
 const props = defineProps({
   route: { type: String, required: true },
   text: { type: String, required: true },
+  params: { type: Object, default: () => ({}) },
 })
 </script>
 

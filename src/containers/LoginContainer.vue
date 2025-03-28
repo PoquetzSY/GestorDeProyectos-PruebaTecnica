@@ -1,5 +1,11 @@
 <template>
-  <LoginView :form-data="formData" :errors="errors" :is-loading="isLoading" @submit="onSubmit" />
+  <LoginView
+    :form-data="formData"
+    :errors="errors"
+    :is-loading="isLoading"
+    @submit="onSubmit"
+    @update:formData="(value) => (formData = value)"
+  />
 </template>
 
 <script setup>
@@ -51,7 +57,7 @@ const onSubmit = async () => {
       router.push(lastRoute)
     } else {
       const authStore = useAuthStore()
-      const userRole = authStore.user?.role_id
+      const userRole = authStore.user?.role.id
 
       if (userRole === 1) {
         router.push('/users')

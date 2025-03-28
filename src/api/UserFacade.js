@@ -2,7 +2,7 @@ import ApiService from './ApiService'
 
 export default class UserService {
   static async listUsers() {
-    return ApiService.get('/users/index')
+    return ApiService.get('/users')
   }
 
   static async getUser(userId) {

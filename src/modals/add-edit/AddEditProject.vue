@@ -100,7 +100,7 @@ import { ref } from 'vue'
 
 const authStore = useAuthStore()
 
-const userRole = authStore.user?.role_id
+const userRole = authStore.user?.role.id
 
 const props = defineProps({
   toUpdate: { type: Boolean, default: false },

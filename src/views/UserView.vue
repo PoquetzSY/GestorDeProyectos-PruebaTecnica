@@ -22,7 +22,7 @@
         </svg>
       </div>
 
-      <TableInfo v-else :columns="columns" :data="users" @refresh="fetchUsers" />
+      <TableInfo v-else :data="users" @refresh="fetchUsers" />
     </div>
   </MainLayout>
 </template>
@@ -34,13 +34,6 @@ import TableInfo from '@/components/table/TableInfo.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 import UserService from '@/api/UserFacade'
 import { showToast } from '@/utils/alerts'
-
-const columns = [
-  { name: 'name', value: 'Nombre' },
-  { name: 'email', value: 'Correo electrónico' },
-  { name: 'registration_date', value: 'Fecha' },
-  { name: 'role_id', value: 'Rol' },
-]
 
 const users = ref([])
 const isLoading = ref(true)

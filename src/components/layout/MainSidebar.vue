@@ -43,7 +43,7 @@
         <nav class="flex flex-col gap-2">
           <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
           <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
-          <SidebarLinks route="profile" text="Perfil" />
+          <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
           <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
         </nav>
       </aside>
@@ -56,7 +56,7 @@
       <nav class="flex flex-col gap-6">
         <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
         <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
-        <SidebarLinks route="profile" text="Perfil" />
+        <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
         <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
       </nav>
     </aside>
@@ -64,6 +64,7 @@
 </template>
 
 <script setup>
+import router from '@/router'
 import SidebarLinks from './SidebarLinks.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { ref } from 'vue'
@@ -71,6 +72,7 @@ import { ref } from 'vue'
 const authStore = useAuthStore()
 
 const userRole = authStore.user?.role_id
+const userId = authStore.user?.id
 
 const isOpen = ref(false)
 
@@ -80,6 +82,7 @@ const toggleSidebar = () => {
 
 const logout = () => {
   authStore.logout()
+  router.push({ name: 'login' })
 }
 </script>
 

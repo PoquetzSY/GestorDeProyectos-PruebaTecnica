@@ -96,6 +96,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['refresh'])
+const roleOptions = ref([])
 
 const isOpen = ref(false)
 const isLoading = ref(false)
@@ -116,14 +117,20 @@ const errors = ref({
   role_id: '',
 })
 
-const roleOptions = [
-  { id: 1, name: 'RH' },
-  { id: 2, name: 'Desarrollador' },
-  { id: 3, name: 'Planeación' },
-  { id: 4, name: 'Tester' },
-]
+const getRoles = async () => {
+  try {
+    const response = await UserService.getUserRoles()
+    roleOptions.value = response.data.map((role) => ({
+      id: role.id,
+      name: role.name,
+    }))
+  } catch (error) {
+    showToast('error', 'Error', error.message || 'Ocurrió un error al obtener los roles')
+  }
+}
 
 const openModal = async () => {
+  await getRoles()
   if (props.userId) {
     try {
       const response = await UserService.getUser(props.userId)

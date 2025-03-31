@@ -67,8 +67,8 @@
             type="password"
           />
           <CustomSelect
-            v-model="formData.role"
-            :error-message="errors.role"
+            v-model="formData.role_id"
+            :error-message="errors.role_id"
             label="Rol"
             :options="roleOptions"
           />
@@ -97,6 +97,7 @@ import { ref } from 'vue'
 const emit = defineEmits(['refresh'])
 
 const isOpen = ref(false)
+const roleOptions = ref([])
 const isLoading = ref(false)
 
 const formData = ref({
@@ -105,7 +106,7 @@ const formData = ref({
   last_name_m: '',
   email: '',
   password: '',
-  role: 0,
+  role_id: 0,
 })
 
 const errors = ref({
@@ -114,17 +115,23 @@ const errors = ref({
   last_name_m: '',
   email: '',
   password: '',
-  role: '',
+  role_id: '',
 })
 
-const roleOptions = [
-  { id: 1, name: 'RH' },
-  { id: 2, name: 'Desarrollador' },
-  { id: 3, name: 'Planeación' },
-  { id: 4, name: 'Tester' },
-]
+const getRoles = async () => {
+  try {
+    const response = await UserService.getUserRoles()
+    roleOptions.value = response.data.map((role) => ({
+      id: role.id,
+      name: role.name,
+    }))
+  } catch (error) {
+    showToast('error', 'Error', error.message || 'Ocurrió un error al obtener los roles')
+  }
+}
 
-const openModal = () => {
+const openModal = async () => {
+  await getRoles()
   isOpen.value = true
 }
 
@@ -140,7 +147,7 @@ const resetForm = () => {
     last_name_m: '',
     email: '',
     password: '',
-    role: 0,
+    role_id: 0,
   }
   errors.value = {
     name: '',
@@ -148,7 +155,7 @@ const resetForm = () => {
     last_name_m: '',
     email: '',
     password: '',
-    role: '',
+    role_id: '',
   }
 }
 
@@ -162,7 +169,7 @@ const fieldValidations = {
     customValidation: (value) =>
       value.length >= 8 || 'La contraseña debe ser de al menos 8 caracteres',
   },
-  role: { message: 'El rol es obligatorio' },
+  role_id: { message: 'El rol es obligatorio' },
 }
 
 const { validateForm } = useFormValidation(formData, errors, fieldValidations)

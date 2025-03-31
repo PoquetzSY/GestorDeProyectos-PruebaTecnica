@@ -64,7 +64,6 @@
           label="Descripción"
         />
         <CustomSelect
-          v-show="!props.toUpdate"
           v-model="formData.assigned_users"
           :error-message="errors.developers"
           id="developers"
@@ -109,25 +108,19 @@ const isOpen = ref(false)
 const isLoading = ref(false)
 const emit = defineEmits(['refresh'])
 
-const task = ref({
-  title: '',
-  description: '',
-  project_id: props.projectId,
-  assigned_users: [],
-  status_id: 1,
-})
-
 const formData = ref({
   title: '',
   description: '',
   project_id: props.projectId,
   assigned_users: [],
+  status_id: 0,
 })
 
 const errors = ref({
   title: '',
   description: '',
   developers: '',
+  status_id: '',
 })
 
 const fetchDevelopers = async () => {
@@ -148,12 +141,12 @@ const openModal = async () => {
   if (props.toUpdate && props.taskId) {
     try {
       const response = await TaskService.getTask(props.taskId)
-      task.value = response.data
       formData.value = {
-        title: task.value.title,
-        description: task.value.description,
-        project_id: task.value.project_id,
-        assigned_users: task.value.assigned_users.map((user) => user.id),
+        title: response.data.title,
+        description: response.data.description,
+        project_id: response.data.project_id,
+        assigned_users: response.data.assigned_users.map((user) => user.id),
+        status_id: response.data.status_id,
       }
     } catch (error) {
       console.error('Error al cargar la tarea:', error)
@@ -175,11 +168,13 @@ const resetForm = () => {
     description: '',
     project_id: props.projectId,
     assigned_users: [],
+    status_id: 1,
   }
   errors.value = {
     title: '',
     description: '',
     developers: '',
+    status_id: '',
   }
 }
 
@@ -207,11 +202,10 @@ const onSubmit = async () => {
   try {
     if (props.toUpdate && props.taskId) {
       delete formData.value.project_id
-      delete formData.value.assigned_users
-      console.log('Form data to update:', formData.value) 
       await TaskService.updateTask(props.taskId, formData.value)
       showToast('success', 'Éxito', 'Tarea actualizada correctamente')
     } else {
+      delete formData.value.status_id
       await TaskService.createTask(formData.value)
       showToast('success', 'Éxito', 'Tarea creada correctamente')
     }

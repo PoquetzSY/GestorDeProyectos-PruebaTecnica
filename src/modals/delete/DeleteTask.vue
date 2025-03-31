@@ -14,47 +14,44 @@
       </svg>
     </button>
 
-    <Transition>
-      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
-        <div class="bg-white p-10 rounded-lg w-md flex flex-col gap-6">
-          <p class="text-3xl text-center">¿Deseas eliminar la tarea {{ props.title }}?</p>
-          <div class="flex justify-center gap-4">
-            <MainButton :loading="isDeleting" @buttonClick="deleteData">
-              Confirmar
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
-              </svg>
-            </MainButton>
-
-            <MainButton variant="outline" @buttonClick="closeModal">
-              Cancelar
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-            </MainButton>
-          </div>
-        </div>
+    <ModalBase v-model="isOpen" type="delete">
+      <p class="text-3xl text-center">¿Deseas eliminar la tarea {{ props.title }}?</p>
+      <div class="flex justify-center gap-4">
+        <MainButton :loading="isDeleting" @buttonClick="deleteData">
+          Confirmar
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" />
+          </svg>
+        </MainButton>
+  
+        <MainButton variant="outline" @buttonClick="closeModal">
+          Cancelar
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+            />
+          </svg>
+        </MainButton>
       </div>
-    </Transition>
+    </ModalBase>
   </div>
 </template>
 
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
+import ModalBase from '@/modals/ModalBase.vue'
 import TaskService from '@/api/TasksFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'

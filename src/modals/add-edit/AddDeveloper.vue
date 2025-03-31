@@ -129,8 +129,10 @@ const onSubmit = async () => {
   isLoading.value = true
   try {
     if (props.isTask) {
+      console.log('selectedUsers', selectedUsers.value)
       await TaskService.assignDevelopers(props.taskId, selectedUsers.value)
     } else {
+      console.log('selectedUsers', selectedUsers.value)
       await ProjectService.assignDevelopers(props.projectId, selectedUsers.value)
     }
     showToast('success', 'Desarrolladores asignados correctamente')

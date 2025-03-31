@@ -2,6 +2,10 @@
 
 @import 'tailwindcss';
 
+@theme {
+  --breakpoint-xs: 22rem;
+}
+
 body {
   background-color: #eeeeee;
   font-family: 'Quicksand', sans-serif;

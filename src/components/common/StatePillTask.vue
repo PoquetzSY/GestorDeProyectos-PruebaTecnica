@@ -60,7 +60,7 @@ const updateStatus = async (newStatus) => {
 
   isLoading.value = true
   try {
-    await TaskService.changeTaskStatus(props.projectId, newStatus.id)
+    await TaskService.changeTaskStatus(props.taskId, newStatus.id)
     emit('update:modelValue', newStatus.id)
     emit('statusUpdated')
     showToast('success', 'Éxito', 'Estado actualizado correctamente')

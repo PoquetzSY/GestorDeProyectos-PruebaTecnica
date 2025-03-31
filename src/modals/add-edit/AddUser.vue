@@ -38,7 +38,7 @@
           id="name"
           label="Nombre"
         />
-        <div class="flex gap-4">
+        <FormGroup>
           <CustomInput
             v-model="formData.last_name_p"
             :error-message="errors.last_name_p"
@@ -51,14 +51,14 @@
             id="secondLastName"
             label="Apellido Materno"
           />
-        </div>
+        </FormGroup>
         <CustomInput
           v-model="formData.email"
           :error-message="errors.email"
           id="email"
           label="Correo electrónico"
         />
-        <div class="flex gap-4">
+        <FormGroup>
           <CustomInput
             v-model="formData.password"
             :error-message="errors.password"
@@ -69,11 +69,10 @@
           <CustomSelect
             v-model="formData.role"
             :error-message="errors.role"
-            id="role"
             label="Rol"
             :options="roleOptions"
           />
-        </div>
+        </FormGroup>
         <MainButton type="submit">
           <span v-if="!isLoading">Guardar</span>
           <LoadingSpinner v-if="isLoading" />
@@ -85,6 +84,7 @@
 
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
+import FormGroup from '@/components/form/FormGroup.vue'
 import ModalBase from '@/modals/ModalBase.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
 import CustomSelect from '@/components/form/CustomSelect.vue'

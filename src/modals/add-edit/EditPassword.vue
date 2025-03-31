@@ -36,7 +36,7 @@
         <CustomInput
           v-model="formData.password"
           :error-message="errors.password"
-          id="password"
+          :id="'password' + formData.password"
           label="Contraseña"
           type="password"
         />

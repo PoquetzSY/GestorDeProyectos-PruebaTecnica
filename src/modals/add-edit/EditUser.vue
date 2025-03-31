@@ -36,38 +36,37 @@
         <CustomInput
           v-model="formData.name"
           :error-message="errors.name"
-          id="name"
+          :id="'name' + formData.name"
           label="Nombre"
         />
-        <div class="flex gap-4">
+        <FormGroup>
           <CustomInput
             v-model="formData.last_name_p"
             :error-message="errors.last_name_p"
-            id="firstLastName"
+            :id="'last_name_p' + formData.last_name_p"
             label="Apellido Paterno"
           />
           <CustomInput
             v-model="formData.last_name_m"
             :error-message="errors.last_name_m"
-            id="secondLastName"
+            :id="'last_name_m' + formData.last_name_m"
             label="Apellido Materno"
           />
-        </div>
-        <div class="flex gap-4">
+        </FormGroup>
+        <FormGroup>
           <CustomInput
             v-model="formData.email"
             :error-message="errors.email"
-            id="email"
+            :id="'email' + formData.email"
             label="Correo electrónico"
           />
           <CustomSelect
             v-model="formData.role_id"
             :error-message="errors.role_id"
-            id="role"
             label="Rol"
             :options="roleOptions"
           />
-        </div>
+        </FormGroup>
         <MainButton type="submit">
           <span v-if="!isLoading">Guardar</span>
           <LoadingSpinner v-if="isLoading" />
@@ -79,6 +78,7 @@
 
 <script setup>
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import FormGroup from '@/components/form/FormGroup.vue'
 import ModalBase from '@/modals/ModalBase.vue'
 import MainButton from '@/components/common/MainButton.vue'
 import CustomInput from '@/components/form/CustomInput.vue'

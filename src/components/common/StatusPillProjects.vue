@@ -6,7 +6,7 @@
       @click="toggleDropdown"
       :disabled="isLoading"
     >
-      {{ states.find((state) => state.id === modelValue)?.name }}
+      {{ states.find((state) => state.id === modelValue)?.name || 'Planeación' }}	
     </button>
     <div v-if="isOpen" class="absolute top-full mt-2 w-40 bg-white rounded-lg shadow-lg z-10">
       <ul class="text-sm">

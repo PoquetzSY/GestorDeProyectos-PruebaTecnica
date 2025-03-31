@@ -176,13 +176,22 @@ const resetForm = () => {
 const fieldValidations = {
   title: { message: 'El título es obligatorio' },
   description: { message: 'La descripción es obligatoria' },
-  developers: { message: 'Debes seleccionar al menos un desarrollador' },
 }
 
 const { validateForm } = useFormValidation(formData, errors, fieldValidations)
 
+const validateDevs = () => {
+  if (formData.value.assigned_users.length === 0) {
+    errors.value.developers = 'Debes seleccionar al menos un desarrollador'
+    return false
+  }
+  errors.value.developers = ''
+  return true
+}
+
 const onSubmit = async () => {
-  if (!validateForm()) return
+  console.log('Form data:', formData.value)
+  if (!validateForm() && !validateDevs()) return
 
   isLoading.value = true
   try {

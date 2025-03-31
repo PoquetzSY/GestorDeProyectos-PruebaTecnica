@@ -1,12 +1,11 @@
 import { useAuthStore } from '@/stores/authStore'
 
-const BASE_URL = 'https://71d1-2806-103e-27-3781-ddfa-d5e0-66ab-d5ee.ngrok-free.app/api/v1'
+const BASE_URL = 'https://evaluacion2-production-5aec.up.railway.app/api/v1'
 
 const getAuthHeaders = () => {
   const authStore = useAuthStore()
   return {
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
     Authorization: `Bearer ${authStore.token}`,
   }
 }
@@ -25,7 +24,6 @@ export default class ApiService {
       method,
       headers: getAuthHeaders(),
       body: data ? JSON.stringify(data) : null,
-      mode: 'cors',
     }
     const response = await fetch(`${BASE_URL}${endpoint}`, options)
     return handleResponse(response)

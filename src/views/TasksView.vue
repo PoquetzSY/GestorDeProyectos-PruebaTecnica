@@ -61,7 +61,6 @@ const fetchTasks = async () => {
   isLoading.value = true
   try {
     const response = await TaskService.listTasks()
-    console.log('Tareas:', response.data.data)
     tasks.value = response.data.data
   } catch (error) {
     console.error('Error al obtener las tareas:', error)

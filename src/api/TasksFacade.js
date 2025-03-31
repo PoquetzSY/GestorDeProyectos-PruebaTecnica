@@ -22,8 +22,10 @@ export default class TaskService {
   }
 
   static async assignDevelopers(taskId, userIds) {
-    return ApiService.put(`/tasks/${taskId}/assing`, { user_ids: userIds })
-  }
+      return ApiService.post(`/tasks/${taskId}/assign`, {
+        user_ids: userIds,
+      })
+    }
 
   static async changeTaskStatus(taskId, status) {
     return ApiService.put(`/tasks/${taskId}/status`, { status })

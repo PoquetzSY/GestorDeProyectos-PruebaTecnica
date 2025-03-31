@@ -7,7 +7,7 @@
           'border border-neutral-300 py-2 px-4 text-sm sm:text-base rounded-2xl w-full focus:outline-0 invalid:border-red-500 invalid:text-red-600',
           type === 'password' && 'pr-10',
         ]"
-        :id="props.id"
+        :id="uniqueId"
         :type="inputType"
         :placeholder="props.placeholder"
         :value="props.modelValue"
@@ -73,6 +73,8 @@ const inputType = computed(() => {
 const togglePasswordVisibility = () => {
   isPasswordVisible.value = !isPasswordVisible.value
 }
+
+const uniqueId = computed(() => `${props.id}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`)
 </script>
 
 <style scoped>

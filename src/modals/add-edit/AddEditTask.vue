@@ -30,58 +30,64 @@
         />
       </svg>
     </button>
-
-    <Transition>
-      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
-        <div class="bg-white p-10 rounded-xl w-lg">
-          <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold mb-4">
-              {{ props.toUpdate ? 'Editar tarea' : 'Nueva tarea' }}
-            </h2>
-            <button @click="closeModal" class="focus:outline-0 cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
-            <CustomInput
-              v-model="formData.title"
-              :error-message="errors.title"
-              id="title"
-              label="Título"
+    <ModalBase v-model="isOpen">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold mb-4">
+          {{ props.toUpdate ? 'Editar tarea' : 'Nueva tarea' }}
+        </h2>
+        <button @click="closeModal" class="focus:outline-0 cursor-pointer">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
-            <CustomInput
-              v-model="formData.description"
-              :error-message="errors.description"
-              id="description"
-              label="Descripción"
-            />
-            <MainButton type="submit">
-              <span v-if="!isLoading">Guardar</span>
-              <LoadingSpinner v-if="isLoading"/>
-            </MainButton>
-          </form>
-        </div>
+          </svg>
+        </button>
       </div>
-    </Transition>
+  
+      <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
+        <CustomInput
+          v-model="formData.title"
+          :error-message="errors.title"
+          id="title"
+          label="Título"
+        />
+        <CustomInput
+          v-model="formData.description"
+          :error-message="errors.description"
+          id="description"
+          label="Descripción"
+        />
+        <CustomSelect
+          v-model="formData.assigned_users"
+          :error-message="errors.developers"
+          id="developers"
+          label="Seleccionar desarrolladores"
+          :options="userOptions"
+          multiple
+        />
+        <MainButton type="submit">
+          <span v-if="!isLoading">Guardar</span>
+          <LoadingSpinner v-if="isLoading"/>
+        </MainButton>
+      </form>
+    </ModalBase>
   </div>
 </template>
 
 <script setup lang="ts">
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import ModalBase from '@/modals/ModalBase.vue'
 import MainButton from '@/components/common/MainButton.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
+import CustomSelect from '@/components/form/CustomSelect.vue'
 import TaskService from '@/api/TasksFacade'
+import ProjectService from '@/api/ProjectsFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { useFormValidation } from '@/utils/formValidation'
 import { showToast } from '@/utils/alerts'
@@ -97,23 +103,39 @@ const props = defineProps({
   taskId: { type: Number, default: null },
 })
 
-const emit = defineEmits(['refresh'])
-
+const userOptions = ref([])
 const isOpen = ref(false)
 const isLoading = ref(false)
+const emit = defineEmits(['refresh'])
 
 const formData = ref({
   title: '',
   description: '',
   project_id: props.projectId,
+  assigned_users: [],
 })
 
 const errors = ref({
   title: '',
   description: '',
+  developers: '',
 })
 
+const fetchDevelopers = async () => {
+  try {
+    const response = await ProjectService.getDevelopTesters()
+    userOptions.value = response.data.map((user) => ({
+      id: user.id,
+      name: `${user.full_name}`,
+    }))
+  } catch (error) {
+    console.error('Error obteniendo usuarios:', error)
+    showToast('error', 'Error al obtener la lista de usuarios')
+  }
+}
+
 const openModal = async () => {
+  await fetchDevelopers()
   if (props.toUpdate && props.taskId) {
     try {
       const response = await TaskService.getTask(props.taskId)
@@ -121,6 +143,7 @@ const openModal = async () => {
         title: response.data.title,
         description: response.data.description,
         project_id: response.data.project_id,
+        assigned_users: response.data.assigned_users.map((user) => user.id),
       }
     } catch (error) {
       console.error('Error al cargar la tarea:', error)
@@ -141,16 +164,19 @@ const resetForm = () => {
     title: '',
     description: '',
     project_id: props.projectId,
+    assigned_users: [],
   }
   errors.value = {
     title: '',
     description: '',
+    developers: '',
   }
 }
 
 const fieldValidations = {
   title: { message: 'El título es obligatorio' },
   description: { message: 'La descripción es obligatoria' },
+  developers: { message: 'Debes seleccionar al menos un desarrollador' },
 }
 
 const { validateForm } = useFormValidation(formData, errors, fieldValidations)

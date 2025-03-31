@@ -6,7 +6,7 @@
       @click="toggleDropdown"
       :disabled="isLoading"
     >
-      {{ states.find((state) => state.id === modelValue)?.name || 'Planeación' }}
+      {{ states.find((state) => state.id === modelValue)?.name }}
     </button>
     <div v-if="isOpen" class="absolute top-full mt-2 w-40 bg-white rounded-lg shadow-lg z-10">
       <ul class="text-sm">
@@ -57,7 +57,7 @@ const fetchStates = async () => {
 }
 
 const toggleDropdown = () => {
-  if (userRole === 3) return
+  if (userRole !== 3) return
   isOpen.value = !isOpen.value
 }
 

@@ -14,48 +14,45 @@
       </svg>
     </button>
 
-    <Transition>
-      <div v-show="isOpen" class="bg-black/50 fixed inset-0 z-20 flex justify-center items-center">
-        <div class="bg-white p-10 rounded-xl w-lg">
-          <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold mb-4">Editar contraseña</h2>
-            <button @click="closeModal" class="focus:outline-0 cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="currentColor"
-              >
-                <path
-                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
-            <CustomInput
-              v-model="formData.password"
-              :error-message="errors.password"
-              id="password"
-              label="Contraseña"
-              type="password"
+    <ModalBase v-model="isOpen">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold mb-4">Editar contraseña</h2>
+        <button @click="closeModal" class="focus:outline-0 cursor-pointer">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+          >
+            <path
+              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
             />
-
-            <MainButton type="submit">
-              <span v-if="!isLoading">Guardar</span>
-              <LoadingSpinner v-if="isLoading"/>
-            </MainButton>
-          </form>
-        </div>
+          </svg>
+        </button>
       </div>
-    </Transition>
+  
+      <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
+        <CustomInput
+          v-model="formData.password"
+          :error-message="errors.password"
+          id="password"
+          label="Contraseña"
+          type="password"
+        />
+  
+        <MainButton type="submit">
+          <span v-if="!isLoading">Guardar</span>
+          <LoadingSpinner v-if="isLoading"/>
+        </MainButton>
+      </form>
+    </ModalBase>
   </div>
 </template>
 
 <script setup>
 import MainButton from '@/components/common/MainButton.vue'
+import ModalBase from '@/modals/ModalBase.vue'
 import CustomInput from '@/components/form/CustomInput.vue'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import { useFormValidation } from '@/utils/formValidation'

@@ -27,11 +27,6 @@
 import { ref, computed, onMounted } from 'vue'
 import TaskService from '@/api/TasksFacade'
 import { showToast } from '@/utils/alerts'
-import { useAuthStore } from '@/stores/authStore'
-
-const authStore = useAuthStore()
-
-const userRole = authStore.user?.role_id
 
 const props = defineProps({
   modelValue: { type: Number, required: true },

@@ -5,6 +5,10 @@ export default class TaskService {
     return ApiService.get(`/tasks`)
   }
 
+  static async createTask(taskData) {
+    return ApiService.post(`/tasks`, taskData)
+  }
+
   static async updateTask(taskId, taskData) {
     return ApiService.put(`/tasks/${taskId}`, taskData)
   }
@@ -14,10 +18,10 @@ export default class TaskService {
   }
 
   static async deleteTask(taskId) {
-    return ApiService.delete(`/tasks/delete/${taskId}`)
+    return ApiService.delete(`/tasks/${taskId}`)
   }
 
-  static async assignUsers(taskId, userIds) {
+  static async assignDevelopers(taskId, userIds) {
     return ApiService.put(`/tasks/${taskId}/assing`, { user_ids: userIds })
   }
 

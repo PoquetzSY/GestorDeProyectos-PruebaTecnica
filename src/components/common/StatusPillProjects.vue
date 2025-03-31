@@ -57,7 +57,7 @@ const fetchStates = async () => {
 }
 
 const toggleDropdown = () => {
-  if (userRole !== 3) return
+  if (userRole === 3) return
   isOpen.value = !isOpen.value
 }
 

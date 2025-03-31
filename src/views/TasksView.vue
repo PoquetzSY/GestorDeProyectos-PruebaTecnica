@@ -22,11 +22,7 @@
             <DeleteTask :title="task.title" :id-to-delete="task.id" @refresh="fetchTasks" />
           </template>
           <template #actions>
-            <StatusPillTask
-              v-model="task.status"
-              :task-id="task.id"
-              :states="['En proceso', 'Finalizada', 'En pruebas', 'Bug', 'En espera de asignación']"
-            />
+            <StatusPillTask v-model="task.status_id" :task-id="task.id" />
             <div class="flex gap-2">
               <AddEditTask
                 :task-id="task.id"
@@ -65,7 +61,8 @@ const fetchTasks = async () => {
   isLoading.value = true
   try {
     const response = await TaskService.listTasks()
-    tasks.value = response.data
+    console.log('Tareas:', response.data.data)
+    tasks.value = response.data.data
   } catch (error) {
     console.error('Error al obtener las tareas:', error)
     showToast('error', 'Error al cargar las tareas', error.message)

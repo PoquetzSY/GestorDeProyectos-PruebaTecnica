@@ -6,17 +6,17 @@
       @click="toggleDropdown"
       :disabled="isLoading"
     >
-      {{ modelValue }}
+      {{ states.find((state) => state.id === modelValue)?.name || 'Planeación' }}
     </button>
     <div v-if="isOpen" class="absolute top-full mt-2 w-40 bg-white rounded-lg shadow-lg z-10">
       <ul class="text-sm">
         <li
           v-for="state in states"
-          :key="state"
+          :key="state.id"
           @click="updateStatus(state)"
           class="px-4 py-2 cursor-pointer hover:bg-gray-100"
         >
-          {{ state }}
+          {{ state.name }}
         </li>
       </ul>
     </div>
@@ -24,38 +24,49 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import TaskService from '@/api/TasksFacade'
 import { showToast } from '@/utils/alerts'
 import { useAuthStore } from '@/stores/authStore'
-
-const props = defineProps({
-  modelValue: { type: String, required: true },
-  states: { type: Array, required: true },
-  taskId: { type: Number, required: true },
-})
 
 const authStore = useAuthStore()
 
 const userRole = authStore.user?.role_id
 
+const props = defineProps({
+  modelValue: { type: Number, required: true },
+  taskId: { type: Number, required: true },
+})
+
 const emit = defineEmits(['update:modelValue', 'statusUpdated'])
-const isOpen = ref(false)
+
+const states = ref([])
 const isLoading = ref(false)
+const isOpen = ref(false)
+
+const fetchStates = async () => {
+  isLoading.value = true
+  try {
+    const response = await TaskService.getTaskStatus()
+    states.value = response.data
+  } catch (error) {
+    console.error('Error al obtener los estados:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const toggleDropdown = () => {
-  if (userRole !== 3) return
   isOpen.value = !isOpen.value
 }
 
 const updateStatus = async (newStatus) => {
-  if (newStatus === props.modelValue) return
+  if (newStatus.id === props.modelValue) return
 
   isLoading.value = true
   try {
-    await TaskService.changeTaskStatus(props.taskId, newStatus)
-    console.log(newStatus + ' ' + props.taskId)
-    emit('update:modelValue', newStatus)
+    await TaskService.changeTaskStatus(props.projectId, newStatus.id)
+    emit('update:modelValue', newStatus.id)
     emit('statusUpdated')
     showToast('success', 'Éxito', 'Estado actualizado correctamente')
   } catch (error) {
@@ -69,18 +80,20 @@ const updateStatus = async (newStatus) => {
 
 const statusClasses = computed(() => {
   switch (props.modelValue) {
-    case 'En proceso':
-      return 'bg-yellow-100 text-yellow-600'
-    case 'Finalizada':
-      return 'bg-green-100 text-green-600'
-    case 'En pruebas':
-      return 'bg-blue-100 text-blue-600'
-    case 'Bug':
-      return 'bg-red-100 text-red-600'
-    case 'En espera de asignación':
+    case 1:
       return 'bg-gray-100 text-gray-600'
+    case 2:
+      return 'bg-yellow-100 text-yellow-600'
+    case 3:
+      return 'bg-blue-100 text-blue-600'
+    case 4:
+      return 'bg-red-100 text-red-600'
+    case 5:
+      return 'bg-green-100 text-green-600'
     default:
       return 'bg-gray-100 text-gray-600'
   }
 })
+
+onMounted(fetchStates)
 </script>

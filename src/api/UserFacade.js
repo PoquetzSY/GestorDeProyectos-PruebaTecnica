@@ -26,7 +26,7 @@ export default class UserService {
   }
 
   static async updateUserPassword(userId, passwordData) {
-    return ApiService.put(`/users/update-password/${userId}`, passwordData)
+    return ApiService.put(`/users/${userId}/password`, passwordData)
   }
 
   static async deleteUser(userId) {

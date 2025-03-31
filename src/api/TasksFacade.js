@@ -2,11 +2,11 @@ import ApiService from './ApiService'
 
 export default class TaskService {
   static async listTasks() {
-    return ApiService.get(`/tasks/index`)
+    return ApiService.get(`/tasks`)
   }
 
   static async createTask(taskData) {
-    return ApiService.post('/tasks/store', taskData)
+    return ApiService.post('/tasks', taskData)
   }
 
   static async updateTask(taskId, taskData) {

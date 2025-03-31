@@ -49,11 +49,11 @@ import AddEditTask from '@/modals/add-edit/AddEditTask.vue'
 import DeleteTask from '@/modals/delete/DeleteTask.vue'
 import AddDeveloper from '@/modals/add-edit/AddDeveloper.vue'
 import StatusPillTask from '@/components/common/StatePillTask.vue'
-import ProjectService from '@/api/ProjectsFacade'
 import { showToast } from '@/utils/alerts'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+import TaskService from '@/api/TasksFacade'
 
 const route = useRoute()
 const projectId = Number(route.params.projectId)
@@ -64,7 +64,7 @@ const tasks = ref([])
 const fetchTasks = async () => {
   isLoading.value = true
   try {
-    const response = await ProjectService.getTasksByProject(projectId)
+    const response = await TaskService.listTasks()
     tasks.value = response.data
   } catch (error) {
     console.error('Error al obtener las tareas:', error)

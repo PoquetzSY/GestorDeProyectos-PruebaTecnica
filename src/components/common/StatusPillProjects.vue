@@ -6,17 +6,17 @@
       @click="toggleDropdown"
       :disabled="isLoading"
     >
-      {{ modelValue }}
+      {{ states.find((state) => state.id === modelValue)?.name || 'Planeación' }}
     </button>
     <div v-if="isOpen" class="absolute top-full mt-2 w-40 bg-white rounded-lg shadow-lg z-10">
       <ul class="text-sm">
         <li
           v-for="state in states"
-          :key="state"
+          :key="state.id"
           @click="updateStatus(state)"
           class="px-4 py-2 cursor-pointer hover:bg-gray-100"
         >
-          {{ state }}
+          {{ state.name }}
         </li>
       </ul>
     </div>
@@ -27,21 +27,34 @@
 import ProjectService from '@/api/ProjectsFacade'
 import { useAuthStore } from '@/stores/authStore'
 import { showToast } from '@/utils/alerts'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const authStore = useAuthStore()
 
 const userRole = authStore.user?.role_id
 
 const props = defineProps({
-  modelValue: { type: String, required: true },
-  states: { type: Array, required: true },
+  modelValue: { type: Number, required: true },
   projectId: { type: Number, required: true },
 })
 
 const emit = defineEmits(['update:modelValue', 'statusUpdated'])
-const isOpen = ref(false)
+
+const states = ref([])
 const isLoading = ref(false)
+const isOpen = ref(false)
+
+const fetchStates = async () => {
+  isLoading.value = true
+  try {
+    const response = await ProjectService.getProjectStatus()
+    states.value = response.data
+  } catch (error) {
+    console.error('Error al obtener los estados:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const toggleDropdown = () => {
   if (userRole !== 3) return
@@ -49,12 +62,12 @@ const toggleDropdown = () => {
 }
 
 const updateStatus = async (newStatus) => {
-  if (newStatus === props.modelValue) return
+  if (newStatus.id === props.modelValue) return
 
   isLoading.value = true
   try {
-    await ProjectService.changeProjectStatus(props.projectId, newStatus)
-    emit('update:modelValue', newStatus)
+    await ProjectService.changeProjectStatus(props.projectId, newStatus.id)
+    emit('update:modelValue', newStatus.id)
     emit('statusUpdated')
     showToast('success', 'Éxito', 'Estado actualizado correctamente')
   } catch (error) {
@@ -68,16 +81,18 @@ const updateStatus = async (newStatus) => {
 
 const statusClasses = computed(() => {
   switch (props.modelValue) {
-    case 'En desarrollo':
+    case 2:
       return 'bg-blue-100 text-blue-600'
-    case 'En pausa':
+    case 3:
       return 'bg-yellow-100 text-yellow-600'
-    case 'Finalizado':
-      return 'bg-green-100 text-green-600'
-    case 'Cancelado':
+    case 4:
       return 'bg-red-100 text-red-600'
+    case 5:
+      return 'bg-green-100 text-green-600'
     default:
       return 'bg-gray-100 text-gray-600'
   }
 })
+
+onMounted(fetchStates)
 </script>

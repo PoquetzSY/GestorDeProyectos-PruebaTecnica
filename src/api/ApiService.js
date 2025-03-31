@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/stores/authStore'
 
-const BASE_URL = 'https://aa59-2806-103e-27-3781-d145-53db-3d52-e6ff.ngrok-free.app/api/v1'
+const BASE_URL = 'http://127.0.0.1:8080/api/v1'
 
 const getAuthHeaders = () => {
   const authStore = useAuthStore()
@@ -25,6 +25,7 @@ export default class ApiService {
       method,
       headers: getAuthHeaders(),
       body: data ? JSON.stringify(data) : null,
+      mode: 'cors'
     }
     const response = await fetch(`${BASE_URL}${endpoint}`, options)
     return handleResponse(response)

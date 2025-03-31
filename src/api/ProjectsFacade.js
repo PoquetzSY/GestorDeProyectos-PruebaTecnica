@@ -2,23 +2,23 @@ import ApiService from './ApiService'
 
 export default class ProjectService {
   static async listProjects() {
-    return ApiService.get('/projects/index')
+    return ApiService.get('/projects')
   }
 
   static async createProject(projectData) {
-    return ApiService.post('/projects/store', projectData)
+    return ApiService.post('/projects', projectData)
   }
 
   static async getProject(projectId) {
-    return ApiService.get(`/projects/show/${projectId}`)
+    return ApiService.get(`/projects/${projectId}`)
   }
 
   static async updateProject(projectId, projectData) {
-    return ApiService.put(`/projects/update/${projectId}`, projectData)
+    return ApiService.put(`/projects/${projectId}`, projectData)
   }
 
   static async deleteProject(projectId) {
-    return ApiService.delete(`/projects/delete/${projectId}`)
+    return ApiService.delete(`/projects/${projectId}`)
   }
 
   static async assignDevelopers(projectId, developerIds) {
@@ -28,18 +28,14 @@ export default class ProjectService {
   }
 
   static async getTasksByProject(projectId) {
-    return ApiService.get(`/projects/task-project/${projectId}`)
+    return ApiService.get(`/projects/${projectId}/tasks`)
   }
 
-  static async changeProjectStatus(projectId, status) {
-    return ApiService.put(`/projects/update-status/${projectId}`, { status })
+  static async changeProjectStatus(projectId, statusId) {
+    return ApiService.put(`/projects/${projectId}/status`, { status_id: statusId })
   }
 
-  static async listDevelopers() {
-    return ApiService.get('/developers')
-  }
-
-  static async listTesters() {
-    return ApiService.get('/testers')
+  static async getProjectStatus() {
+    return ApiService.get('/projects/project-statuses')
   }
 }

@@ -13,22 +13,12 @@
       </thead>
       <tbody class="divide-y divide-gray-200">
         <tr v-for="data in props.data" :key="data.id" class="bg-white">
-          <RowInfo class="text-center">
-            {{ data.id }}
-          </RowInfo>
-          <RowInfo class="text-center">
-            {{ data.name }}
-          </RowInfo>
-          <RowInfo class="text-center">
-            {{ data.email }}
-          </RowInfo>
-          <RowInfo class="text-center">
-            {{ new Date(data.created_at).toLocaleDateString() }}
-          </RowInfo>
-          <RowInfo class="text-center">
-            {{ getRoleName(data.role.name) }}
-          </RowInfo>
-          <RowInfo class="flex justify-center gap-2">
+          <RowInfo class="text-center" :info="data.id"/>
+          <RowInfo class="text-center" :info="data.name"/>
+          <RowInfo class="text-center" :info="data.email"/>
+          <RowInfo class="text-center" :info="new Date(data.created_at).toLocaleDateString()"/>
+          <RowInfo class="text-center" :info="data.role.name"/>
+          <td class="py-3 px-4 flex justify-center gap-2">
             <CustomSwitch
               v-if="data.is_active !== undefined"
               v-model="data.is_active"
@@ -38,7 +28,7 @@
             <EditUser @refresh="emit('refresh')" :user-id="data.id" />
             <EditPassword :user-id="data.id" @refresh="emit('refresh')" />
             <DeleteUser :title="data.name" :id-to-delete="data.id" @refresh="emit('refresh')" />
-          </RowInfo>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -59,14 +49,4 @@ const props = defineProps({
 
 const emit = defineEmits(['refresh'])
 
-const roleMap = {
-  1: 'RH',
-  2: 'Desarrollador',
-  3: 'Planeación',
-  4: 'Tester',
-}
-
-function getRoleName(roleId) {
-  return roleMap[roleId]
-}
 </script>

@@ -37,11 +37,11 @@
             />
           </template>
           <template #actions>
-            <StatusPill
-              v-model="project.status"
+            <StatusPillProjects
+              v-model="project.status.id"
               :project-id="project.id"
-              :states="['En pausa', 'En desarrollo', 'Finalizado', 'Cancelado']"
             />
+
             <div class="flex gap-2 items-center">
               <AddEditProject :project-id="project.id" :to-update="true" @refresh="fetchProjects" />
               <AddDeveloper :projectId="project.id" />
@@ -74,7 +74,7 @@ import CardInfo from '@/components/common/CardInfo.vue'
 import AddEditProject from '@/modals/add-edit/AddEditProject.vue'
 import AddDeveloper from '@/modals/add-edit/AddDeveloper.vue'
 import DeleteProject from '@/modals/delete/DeleteProject.vue'
-import StatusPill from '@/components/common/StatusPillProjects.vue'
+import StatusPillProjects from '@/components/common/StatusPillProjects.vue'
 import ProjectService from '@/api/ProjectsFacade'
 import { showToast } from '@/utils/alerts'
 

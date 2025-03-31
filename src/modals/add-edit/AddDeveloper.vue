@@ -31,7 +31,7 @@
         </button>
       </div>
       <h2 class="text-2xl font-bold text-center">Asignar desarrolladores</h2>
-  
+
       <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
         <CustomSelect
           v-model="selectedUsers"
@@ -41,14 +41,13 @@
           :options="userOptions"
           multiple
         />
-  
+
         <MainButton type="submit">
           <span v-if="!isLoading">Guardar</span>
-          <LoadingSpinner v-if="isLoading"/>
+          <LoadingSpinner v-if="isLoading" />
         </MainButton>
       </form>
     </ModalBase>
-
   </div>
 </template>
 

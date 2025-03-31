@@ -13,11 +13,11 @@
       </thead>
       <tbody class="divide-y divide-gray-200">
         <tr v-for="data in props.data" :key="data.id" class="bg-white">
-          <RowInfo class="text-center" :info="data.id"/>
-          <RowInfo class="text-center" :info="data.name"/>
-          <RowInfo class="text-center" :info="data.email"/>
-          <RowInfo class="text-center" :info="new Date(data.created_at).toLocaleDateString()"/>
-          <RowInfo class="text-center" :info="data.role.name"/>
+          <RowInfo class="text-center" :info="data.id" />
+          <RowInfo class="text-center" :info="data.name" />
+          <RowInfo class="text-center" :info="data.email" />
+          <RowInfo class="text-center" :info="new Date(data.created_at).toLocaleDateString()" />
+          <RowInfo class="text-center" :info="data.role.name" />
           <td class="py-3 px-4 flex justify-center gap-2">
             <CustomSwitch
               v-if="data.is_active !== undefined"
@@ -48,5 +48,4 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['refresh'])
-
 </script>

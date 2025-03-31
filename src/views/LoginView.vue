@@ -25,7 +25,7 @@
         v-on:click="onsubmit"
       >
         <span v-if="!isLoading">Entrar</span>
-        <LoadingSpinner v-if="isLoading"/>
+        <LoadingSpinner v-if="isLoading" />
       </button>
     </div>
   </div>

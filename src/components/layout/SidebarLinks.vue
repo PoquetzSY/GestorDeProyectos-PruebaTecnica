@@ -1,7 +1,9 @@
 <template>
-  <router-link :to="{ name: props.route, params: props.params }" class="text-white hover:text-gray-300">{{
-    props.text
-  }}</router-link>
+  <router-link
+    :to="{ name: props.route, params: props.params }"
+    class="text-white hover:text-gray-300"
+    >{{ props.text }}</router-link
+  >
 </template>
 
 <script setup>

@@ -29,7 +29,7 @@
 
             <MainButton type="submit">
               <span v-if="!isLoading">Guardar</span>
-              <LoadingSpinner v-if="isLoading"/>
+              <LoadingSpinner v-if="isLoading" />
             </MainButton>
           </form>
         </div>

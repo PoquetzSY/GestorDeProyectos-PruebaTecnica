@@ -7,7 +7,7 @@
       </div>
 
       <div v-if="isLoading" class="flex justify-center items-center py-10">
-        <LoadingSpinner/>
+        <LoadingSpinner />
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -26,10 +26,7 @@
             />
           </template>
           <template #actions>
-            <StatusPillProjects
-              v-model="project.status.id"
-              :project-id="project.id"
-            />
+            <StatusPillProjects v-model="project.status.id" :project-id="project.id" />
 
             <div class="flex gap-2 items-center">
               <AddEditProject :project-id="project.id" :to-update="true" @refresh="fetchProjects" />

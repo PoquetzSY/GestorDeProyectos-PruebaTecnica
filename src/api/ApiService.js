@@ -25,7 +25,7 @@ export default class ApiService {
       method,
       headers: getAuthHeaders(),
       body: data ? JSON.stringify(data) : null,
-      mode: 'cors'
+      mode: 'cors',
     }
     const response = await fetch(`${BASE_URL}${endpoint}`, options)
     return handleResponse(response)

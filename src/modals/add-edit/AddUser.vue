@@ -30,7 +30,7 @@
           </svg>
         </button>
       </div>
-  
+
       <form class="flex flex-col gap-4 items-end" @submit.prevent="onSubmit">
         <CustomInput
           v-model="formData.name"
@@ -76,7 +76,7 @@
         </div>
         <MainButton type="submit">
           <span v-if="!isLoading">Guardar</span>
-          <LoadingSpinner v-if="isLoading"/>
+          <LoadingSpinner v-if="isLoading" />
         </MainButton>
       </form>
     </ModalBase>

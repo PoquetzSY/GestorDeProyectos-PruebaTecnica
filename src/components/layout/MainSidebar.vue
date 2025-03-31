@@ -43,7 +43,7 @@
         <nav class="flex flex-col gap-2">
           <SidebarLinks v-if="userRole === 1" route="projects" text="Usuarios" />
           <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
-          <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
+          <SidebarLinks route="profile" :params="{ userId: userId }" text="Perfil" />
           <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
         </nav>
       </aside>
@@ -56,7 +56,7 @@
       <nav class="flex flex-col gap-6">
         <SidebarLinks v-if="userRole === 1" route="projects" text="Usuarios" />
         <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
-        <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
+        <SidebarLinks route="profile" :params="{ userId: userId }" text="Perfil" />
         <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
       </nav>
     </aside>

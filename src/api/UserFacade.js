@@ -9,12 +9,12 @@ export default class UserService {
     return ApiService.get(`/users/${userId}`)
   }
 
-  static async getUserRoles() {
-    return ApiService.get('/users/roles')
+  static async getProfile(userId) {
+    return ApiService.get(`/profile/${userId}`)
   }
 
-  static async getDevelopTesters() {
-    return ApiService.get(`/users/testers-developers`)
+  static async getUserRoles() {
+    return ApiService.get('/users/roles')
   }
 
   static async createUser(userData) {

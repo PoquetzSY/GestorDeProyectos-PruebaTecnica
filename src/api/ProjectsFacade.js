@@ -17,12 +17,16 @@ export default class ProjectService {
     return ApiService.put(`/projects/${projectId}`, projectData)
   }
 
+  static async getDevelopTesters() {
+    return ApiService.get(`/projects/assignable-developers`)
+  }
+
   static async deleteProject(projectId) {
     return ApiService.delete(`/projects/${projectId}`)
   }
 
   static async assignDevelopers(projectId, developerIds) {
-    return ApiService.post(`/projects/assign-developers/${projectId}`, {
+    return ApiService.post(`/projects/${projectId}/developers`, {
       developer_ids: developerIds,
     })
   }

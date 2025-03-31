@@ -41,7 +41,7 @@
         </div>
 
         <nav class="flex flex-col gap-2">
-          <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
+          <SidebarLinks v-if="userRole === 1" route="projects" text="Usuarios" />
           <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
           <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
           <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />
@@ -54,7 +54,7 @@
     >
       <h1 class="text-2xl">Panel de gestión</h1>
       <nav class="flex flex-col gap-6">
-        <SidebarLinks v-if="userRole === 1" route="projects" text="Proyectos" />
+        <SidebarLinks v-if="userRole === 1" route="projects" text="Usuarios" />
         <SidebarLinks v-if="userRole != 1" route="projects" text="Proyectos" />
         <SidebarLinks route="profile" :params="{userId: userId}" text="Perfil" />
         <SidebarLinks route="login" text="Cerrar sesion" @click="logout" />

@@ -84,6 +84,19 @@ const fieldValidations = {
 
 const { validateForm } = useFormValidation(formData, errors, fieldValidations)
 
+const getProfile = async () => {
+  try {
+    const response = await UserService.getProfile(userId)
+    formData.value = {
+      name: response.data.name,
+      last_name_p: response.data.last_name_p,
+      last_name_m: response.data.last_name_m,
+    }
+  } catch (error) {
+    showToast('error', 'Error', error.message || 'Ocurrió un error al obtener el perfil')
+  }
+}
+
 const onSubmit = async () => {
   if (!validateForm()) return
   isLoading.value = true
@@ -96,6 +109,7 @@ const onSubmit = async () => {
       'Tu información ha sido actualizada correctamente',
     )
     authStore.setUserData({ ...authStore.user, ...formData.value })
+    await getProfile()
   } catch (error) {
     showToast('error', 'Error', error.message || 'Ocurrió un error al guardar el usuario')
   } finally {
@@ -103,11 +117,7 @@ const onSubmit = async () => {
   }
 }
 
-onMounted(() => {
-  formData.value.name = authStore.user?.name || ''
-  formData.value.last_name_p = authStore.user?.last_name_p || ''
-  formData.value.last_name_m = authStore.user?.last_name_m || ''
-})
+onMounted(getProfile)
 </script>
 
 <style scoped></style>
